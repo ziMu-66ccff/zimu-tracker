@@ -1,6 +1,6 @@
 {
   "name": "zimu-tracker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "一个前端监控SDK",
   "files": [
     "dist"
@@ -13,7 +13,9 @@
     "build:app": "vite build",
     "build": "pnpm build:app && pnpm build:type",
     "lint": "eslint --ext .js,ts --fix src/",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "prepare": "husky install",
+    "commit": "git-cz"
   },
   "keywords": [
     "前端监控",
@@ -26,8 +28,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^18.4.4",
     "@types/node": "^20.10.3",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "commitizen": "^4.3.0",
+    "commitlint-config-cz": "^0.13.3",
+    "cz-customizable": "^7.0.0",
     "eslint": "^8.55.0",
     "eslint-config-standard-with-typescript": "^40.0.0",
     "eslint-plugin-import": "^2.25.2",
@@ -37,8 +43,27 @@
     "vite": "^5.0.4"
   },
   "dependencies": {
+    "@types/ua-parser-js": "^0.7.39",
+    "@types/uuid": "^9.0.7",
+    "bowser": "^2.11.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
     "prettier": "^3.1.0",
+    "ua-parser-js": "^1.0.37",
+    "uuid": "^9.0.1",
     "web-vitals": "^3.5.0"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts}": [
+      "pnpm lint",
+      "pnpm format"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
   }
 }
+

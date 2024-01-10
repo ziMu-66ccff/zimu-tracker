@@ -1,28 +1,19 @@
 import { type Tracker } from '@/core';
+import { type UserActionOptions, type PerformanceOptions, type ErrorOptions } from '..';
 
 /**
  * @param sdkVersion sdk版本
  * @param requestUrl 上报数据的接口地址
- * @param historyTracker history上报
- * @param hashTracker hash上报
- * @param domTracker 携带Tracker-key dom元素的各种事件事件上报
- * @param errorTracker js 和 promise 报错异常上报
+ * @param userActionTracker 用户行为上报
+ * @param performanceTracker: 性能数据上报
  */
 
 export interface Options {
   sdkVersion: string | number;
   requestUrl: string;
-  historyTracker: boolean;
-  hashTracker: boolean;
-  domTracker: boolean;
-  errorTracker: boolean;
-  performanceTracker: boolean;
-}
-
-export interface reportTrackerData {
-  [key: string]: any;
-  event: string;
-  targetKey: string;
+  userActionTracker: boolean | UserActionOptions;
+  performanceTracker: boolean | PerformanceOptions;
+  errorTracker: boolean | ErrorOptions;
 }
 
 export enum TrackerConfig {

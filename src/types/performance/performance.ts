@@ -7,14 +7,24 @@
  * @param RF resource-flow
  */
 
-export enum metricsName {
+export enum PerformanceMetricsName {
   FCP = 'FCP',
   LCP = 'LCP',
   FID = 'FID',
   CLS = 'CLS',
-  NT = 'NT',
-  RF = 'RF',
-  CD = 'cacheData',
+  NT = 'navigationTiming',
+  RF = 'resource-flow',
+  CD = 'cache-data',
+}
+
+export interface PerformanceOptions {
+  FCP?: boolean;
+  LCP?: boolean;
+  FID?: boolean;
+  CLS?: boolean;
+  navigationTiming?: boolean;
+  resourceFlow?: boolean;
+  cacheData?: boolean;
 }
 
 /**
@@ -32,17 +42,17 @@ export enum metricsName {
  */
 
 export interface PerformanceNavigationTiming {
-  DNS?: { start: number; end: number; value: number };
-  SSL?: { start: number; end: number; value: number };
-  TCP?: { start: number; end: number; value: number };
-  TTFB?: { start: number; end: number; value: number };
-  Trans?: { start: number; end: number; value: number };
-  FP?: { start: number; end: number; value: number };
-  DomParse?: { start: number; end: number; value: number };
-  TTI?: { start: number; end: number; value: number };
-  DomReady?: { start: number; end: number; value: number };
-  Res?: { start: number; end: number; value: number };
-  Load?: { start: number; end: number; value: number };
+  DNS: { start: number; end: number; value: number };
+  SSL: { start: number; end: number; value: number };
+  TCP: { start: number; end: number; value: number };
+  TTFB: { start: number; end: number; value: number };
+  Trans: { start: number; end: number; value: number };
+  FP: { start: number; end: number; value: number };
+  DomParse: { start: number; end: number; value: number };
+  TTI: { start: number; end: number; value: number };
+  DomReady: { start: number; end: number; value: number };
+  Res: { start: number; end: number; value: number };
+  Load: { start: number; end: number; value: number };
 }
 
 export interface ResourceFlowTiming {

@@ -42,20 +42,15 @@ export function getNavigationTiming(): PerformanceNavigationTiming {
       end: responseEnd,
       value: responseEnd - responseStart,
     },
-    DomParse: {
-      start: responseEnd,
-      end: domInteractive,
-      value: domInteractive - responseEnd,
-    },
-    Res: {
-      start: domContentLoadedEventEnd,
-      end: loadEventStart,
-      value: loadEventStart - domContentLoadedEventEnd,
-    },
     FP: {
       start: fetchStart,
       end: responseEnd,
       value: responseEnd - fetchStart,
+    },
+    DomParse: {
+      start: responseEnd,
+      end: domInteractive,
+      value: domInteractive - responseEnd,
     },
     TTI: {
       start: fetchStart,
@@ -66,6 +61,11 @@ export function getNavigationTiming(): PerformanceNavigationTiming {
       start: fetchStart,
       end: domContentLoadedEventEnd,
       value: domContentLoadedEventEnd - fetchStart,
+    },
+    Res: {
+      start: responseEnd,
+      end: loadEventStart,
+      value: loadEventStart - responseEnd,
     },
     Load: {
       start: fetchStart,

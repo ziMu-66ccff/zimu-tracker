@@ -113,7 +113,7 @@
         </div>
       </div>
       <div class="footer">
-        <h4 class="title">网页版权信息</h4>
+        <h4 class="title test1 test2">网页版权信息</h4>
         <div class="footerContent">
           <h4>开发者：李文豪</h4>
         </div>
@@ -122,8 +122,8 @@
 
     <script>
       const tracker = new ziMuTracker.Tracker('testApp');
-      tracker.setUserId('开发测试人员');
-      tracker.setExtra({
+      ziMuSetUserId('开发测试人员');
+      ziMuSetExtra({
         testArr: [1, { name: 'ziMu', data: { age: 19 } }],
       });
     </script>

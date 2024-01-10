@@ -1,5 +1,9 @@
 import { type Report } from '@/types';
-import { type ResourceFlowTiming, metricsName } from '@/types/performance';
+import {
+  PerformanceMetricsName,
+  type ResourceFlowTiming,
+  type PerformanceOptions,
+} from '@/types/performance';
 import {
   onFCP,
   onCLS,
@@ -10,33 +14,41 @@ import {
   type FIDMetric,
   type CLSMetric,
 } from 'web-vitals';
-import { getNavigationTiming } from './getNT';
+import { getNavigationTiming } from './getNavigationTiming';
 import { afterLoad } from '@/utils/afterLoad';
-import { getResourceFlow } from './getRF';
-import { getCacheData } from './getCD';
+import { getResourceFlow } from './getResourceFlow';
+import { getCacheData } from './getCacheData';
+import { type Tracker } from '..';
 
 export class PerformanceTracker {
-  private readonly data: Record<metricsName | string, Record<string, any>>;
+  private readonly data: Record<PerformanceMetricsName | string, Record<string, any>>;
+  private readonly options: PerformanceOptions;
   private readonly report: Report;
+  private readonly trackerInstance: Tracker;
 
-  constructor(report: Report) {
+  constructor(options: true | PerformanceOptions, report: Report, trackerInstance: Tracker) {
     this.data = {};
+    this.options = Object.assign(
+      {
+        FCP: true,
+        LCP: true,
+        FID: true,
+        CLS: true,
+        navigationTiming: true,
+        resourceFlow: true,
+        cacheData: true,
+      },
+      options,
+    );
     this.report = report;
-    this.initFCP();
-    this.initLCP();
-    this.initFID();
-    this.initCLS();
-    afterLoad(() => {
-      this.initNavigationTiming();
-      this.initResourceFlow();
-      this.initCacheData();
-    });
+    this.trackerInstance = trackerInstance;
+    this.installPerformanceInnerTracker();
     this.performanceDataReportHandler();
   }
 
   private initFCP() {
     onFCP((metricData: FCPMetric) => {
-      this.data[metricsName.FCP] = {
+      this.data[PerformanceMetricsName.FCP] = {
         name: metricData.name,
         value: metricData.value,
         rating: metricData.rating,
@@ -46,7 +58,7 @@ export class PerformanceTracker {
 
   private initLCP() {
     onLCP((metricData: LCPMetric) => {
-      this.data[metricsName.LCP] = {
+      this.data[PerformanceMetricsName.LCP] = {
         name: metricData.name,
         value: metricData.value,
         rating: metricData.rating,
@@ -56,7 +68,7 @@ export class PerformanceTracker {
 
   private initFID() {
     onFID((metricData: FIDMetric) => {
-      this.data[metricsName.FID] = {
+      this.data[PerformanceMetricsName.FID] = {
         name: metricData.name,
         value: metricData.value,
         rating: metricData.rating,
@@ -66,7 +78,7 @@ export class PerformanceTracker {
 
   private initCLS() {
     onCLS((metricData: CLSMetric) => {
-      this.data[metricsName.CLS] = {
+      this.data[PerformanceMetricsName.CLS] = {
         name: metricData.name,
         value: metricData.value,
         rating: metricData.rating,
@@ -76,33 +88,36 @@ export class PerformanceTracker {
 
   private initNavigationTiming() {
     const navigationTiming = getNavigationTiming();
-    this.data[metricsName.NT] = navigationTiming;
+    this.data[PerformanceMetricsName.NT] = navigationTiming;
   }
 
   private initResourceFlow() {
-    // const resouceFlow: ResourceFlowTiming[] = [];
-    // const resouceObserver = getResourceFlow(resouceFlow);
-
-    // const stopListeningAndInitRF = () => {
-    //   if (resouceObserver) resouceObserver.disconnect();
-    //   this.data[metricsName.RF] = resouceFlow;
-    // };
-
-    // afterLoad(stopListeningAndInitRF);
-
     const resouceFlow: ResourceFlowTiming[] = getResourceFlow();
-    this.data[metricsName.RF] = resouceFlow;
+    this.data[PerformanceMetricsName.RF] = resouceFlow;
   }
 
   private initCacheData() {
     const cacheData = getCacheData();
-    this.data[metricsName.CD] = cacheData;
+    this.data[PerformanceMetricsName.CD] = cacheData;
+  }
+
+  private installPerformanceInnerTracker() {
+    if (this.options.FCP) this.initFCP();
+    if (this.options.LCP) this.initLCP();
+    if (this.options.FID) this.initFID();
+    if (this.options.CLS) this.initCLS();
+
+    afterLoad(() => {
+      if (this.options.navigationTiming) this.initNavigationTiming();
+      if (this.options.resourceFlow) this.initResourceFlow();
+      if (this.options.cacheData) this.initCacheData();
+    });
   }
 
   private performanceDataReportHandler() {
-    window.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        this.report(this.data);
+    window.addEventListener('beforeunload', () => {
+      if (this.data[PerformanceMetricsName.FID]) {
+        this.report(this.data, 'performance');
       }
     });
   }
