@@ -18,15 +18,13 @@ import { getNavigationTiming } from './getNavigationTiming';
 import { afterLoad } from '@/utils/afterLoad';
 import { getResourceFlow } from './getResourceFlow';
 import { getCacheData } from './getCacheData';
-import { type Tracker } from '..';
 
 export class PerformanceTracker {
   private readonly data: Record<PerformanceMetricsName | string, Record<string, any>>;
   private readonly options: PerformanceOptions;
   private readonly report: Report;
-  private readonly trackerInstance: Tracker;
 
-  constructor(options: true | PerformanceOptions, report: Report, trackerInstance: Tracker) {
+  constructor(options: true | PerformanceOptions, report: Report) {
     this.data = {};
     this.options = Object.assign(
       {
@@ -41,7 +39,6 @@ export class PerformanceTracker {
       options,
     );
     this.report = report;
-    this.trackerInstance = trackerInstance;
     this.installPerformanceInnerTracker();
     this.performanceDataReportHandler();
   }

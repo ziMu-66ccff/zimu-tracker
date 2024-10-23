@@ -1,6 +1,6 @@
 // tsconfig.eslint.json
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "ts-config-zimu/tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true
   },

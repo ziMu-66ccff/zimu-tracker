@@ -9,4 +9,5 @@ export default {
   jsxSingleQuote: false, // jsx 不使用单引号，而使用双引号
   bracketSpacing: true, // 在对象字面量声明所使用的的花括号后（{）和前（}）输出空格
   endOfLine: 'crlf',
+  vueIndentScriptAndStyle: true, // 标识是否要缩进 <script> 和 <style> 标签
 };

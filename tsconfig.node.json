@@ -1,9 +1,10 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "ts-config-zimu/tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "lib": ["ESNext"],
-    "types": ["node"]
+    "types": ["node"],
+    "noEmit": true
   },
   "include": ["./*.config.*"]
 }

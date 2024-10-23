@@ -36,14 +36,12 @@ export class Tracker {
       this.performanceTracker = new PerformanceTracker(
         this.options.performanceTracker,
         this.report.bind(this),
-        this,
       );
     }
     if (this.options.userActionTracker) {
       this.userActionTracker = new UserActionTracker(
         this.options.userActionTracker,
         this.report.bind(this),
-        this,
       );
     }
     if (this.options.errorTracker) {

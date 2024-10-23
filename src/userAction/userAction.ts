@@ -13,7 +13,6 @@ import { afterLoad } from '@/utils';
 import { getOriginInformation } from './getOriginInformation';
 import { proxyXmlHttp } from './proxyXmlHttp';
 import { proxyFetch } from './proxyFetch';
-import { type Tracker } from '..';
 
 export class UserActionTracker {
   private readonly data: Record<UserActionMetricsName | string, Record<string, any>>;
@@ -23,9 +22,8 @@ export class UserActionTracker {
   private readonly eventTrackedList: string[];
   public readonly hehaviorStack: BehaviorStack;
   private readonly report: Report;
-  private readonly trackerInstance: Tracker;
 
-  constructor(options: true | UserActionOptions, report: Report, trackerInstance: Tracker) {
+  constructor(options: true | UserActionOptions, report: Report) {
     this.data = {};
     this.options = Object.assign(
       {
@@ -50,7 +48,6 @@ export class UserActionTracker {
       maxBehaviorRecords: this.options.maxBehaviorRecords!,
     });
     this.report = report;
-    this.trackerInstance = trackerInstance;
     writePushStateAndReplaceState();
     (window as any).ziMuSendData = this.sendDataCustom.bind(this);
     this.installUserActionInnerTracker();

@@ -51,6 +51,7 @@ export class ErrorTracker {
             row: event.lineno,
             col: event.colno,
           },
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           errorStack: parseErrorStackFrames(event.error),
           hehaviorStack: this.trackerInstance.userActionTracker?.hehaviorStack.get(),
           pageInformation: getPageInformation(),
@@ -100,6 +101,7 @@ export class ErrorTracker {
           type: event.reason?.name ?? 'UnKnown',
           errorMessage: event.reason?.message ?? event.reason,
           meta: {},
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           errorStack: parseErrorStackFrames(event.reason),
           hehaviorStack: this.trackerInstance.userActionTracker?.hehaviorStack.get(),
           pageInformation: getPageInformation(),
@@ -159,8 +161,8 @@ export class ErrorTracker {
   }
 
   private errorDataReportHandler(errorData: ErrorData) {
-    if (this.submitErrorUids.includes(errorData.errorUid)) return;
-    this.submitErrorUids.push(errorData.errorUid);
+    if (this.submitErrorUids.includes(errorData.errorUid as string)) return;
+    this.submitErrorUids.push(errorData.errorUid as string);
     this.report(errorData, 'error');
   }
 }
