@@ -112,10 +112,10 @@ export class UserActionTracker {
             ? (event.target as HTMLElement)
             : undefined;
           target =
-            target ??
+            (target ??
             Array.from((event.target as HTMLElement)?.classList).find((className) =>
               this.classTrackedList.includes(className),
-            )
+            ))
               ? (event.target as HTMLElement)
               : undefined;
 
@@ -176,6 +176,7 @@ export class UserActionTracker {
   }
 
   private sendDataCustom(data: Record<string, any>) {
+    // TODO： 重构 不直接调用report来上报 而是先存到一个新的自定义埋点数据栈里面 然后判断满没满 满了集中上报 然后清空数据栈
     this.report(data, 'custom');
     this.hehaviorStack.push({
       name: 'custom',
@@ -197,6 +198,7 @@ export class UserActionTracker {
 
   private userActionDataReportHandler() {
     window.addEventListener('beforeunload', () => {
+      // TODO: 重构 上报前需要判断是否有数据 （this.data是否是空对象 hehaviorStack是否是空数组）
       this.report(this.data, 'userAction');
       if (this.options.BS) this.report(this.hehaviorStack.get(), 'behaviorStack');
     });

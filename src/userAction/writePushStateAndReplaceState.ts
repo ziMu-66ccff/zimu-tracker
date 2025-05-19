@@ -5,8 +5,8 @@ export function writePushStateAndReplaceState() {
 
 function writeHistoryEvent(type: keyof History) {
   const originEvent = history[type];
-  return function (this: any) {
-    const result = originEvent.apply(this, arguments);
+  return function () {
+    const result = originEvent.apply(history, arguments);
     const event = new Event(type);
     window.dispatchEvent(event);
     return result;
